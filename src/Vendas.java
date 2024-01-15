@@ -3,14 +3,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Vendas {
+    /* Formatador de números para a localidade da Alemanha */
     NumberFormat numberFormat = Utils.getNumberFormat();
 
+    /* Variáveis do objeto */
     private int numVenda;
     private LocalDate data;
     private Cliente cliente;
     private ArrayList<Produto> produto;
     private double total;
 
+    /* Construtor */
     public Vendas(int numVenda, LocalDate data, Cliente cliente, ArrayList<Produto> produto) {
         this.numVenda = numVenda;
         this.data = data;
@@ -18,34 +21,42 @@ public class Vendas {
         this.setProduto(produto);
     }
 
+    /* Retorna o número da venda */
     public int getnumVenda() {
         return this.numVenda;
     }
 
+    /* Atribui o número da venda */
     public void setnumVenda(int numVenda) {
         this.numVenda = numVenda;
     }
 
+    /* Retorna a data */
     public LocalDate getDate() {
         return this.data;
     }
 
+    /* Atribui a data */
     public void setDate(LocalDate date) {
         this.data = date;
     }
 
+    /* Retorna o cliente */
     public Cliente getCliente() {
         return this.cliente;
     }
 
+    /* Atribui o cliente */
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
+    /* Retorna a lista de produtos */
     public ArrayList<Produto> getProduto() {
         return this.produto;
     }
 
+    /* Atribui a lista de produtos e calcula o total */
     public void setProduto(ArrayList<Produto> produto) {
         this.produto = produto;
         this.total = 0;
@@ -54,10 +65,12 @@ public class Vendas {
         }
     }
 
+    /* Retorna o total */
     public double getTotal() {
         return this.total;
     }
 
+    /* Formata os dados da venda */
     @Override
     public String toString() {
         String str = "";

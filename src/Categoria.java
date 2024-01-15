@@ -1,6 +1,6 @@
 public enum Categoria {
 
-    /* Variaveis constantes */
+    /* Variáveis constantes */
     GERAL("Geral"),
     MEDICAMENTO("Medicamento"),
     COSMETICO("Cosmético"),
@@ -10,15 +10,23 @@ public enum Categoria {
     DIAGNOSTICO("Diagnóstico"),
     SAUDE_BUCAL("Saúde Bucal");
 
-    /* descriçao */
+    /* Descrição da categoria */
     private String descricao;
 
-    /* Descriçao */
+    /**
+     * Construtor para a enum Categoria.
+     * 
+     * @param descricao A descrição da categoria.
+     */
     Categoria(String descricao) {
         this.descricao = descricao;
     }
 
-    /* return descriçao */
+    /**
+     * Retorna a descrição da categoria.
+     * 
+     * @return A descrição da categoria.
+     */
     public String getDescricao() {
         return this.descricao;
     }

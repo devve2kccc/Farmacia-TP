@@ -4,6 +4,7 @@ import java.time.LocalDate;
 public class Produto {
     NumberFormat numberFormat = Utils.getNumberFormat();
 
+    /* Variáveis do objeto */
     private Categoria categoria;
     private String nome;
     private String descricao;
@@ -12,6 +13,7 @@ public class Produto {
     private int iva;
     private LocalDate validade;
 
+    /* Construtor */
     public Produto(Categoria categoria, String nome, String descricao, int stock, double preco, int iva,
             LocalDate validade) {
         this.categoria = categoria;
@@ -23,6 +25,7 @@ public class Produto {
         this.validade = validade;
     }
 
+    /* Calcula a dose baseado na idade */
     public void calculaDose(int idade) {
         double dose = 0;
 
@@ -39,70 +42,87 @@ public class Produto {
         System.out.println("Dose calculada para idade " + idade + ": " + dose + "g");
     }
 
+    /* Retorna a categoria */
     public Categoria getCategoria() {
         return this.categoria;
     }
 
+    /* Atribui a categoria */
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
+    /* Retorna o nome */
     public String getNome() {
         return this.nome;
     }
 
+    /* Atribui o nome */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+    /* Retorna a descrição */
     public String getDescricao() {
         return descricao;
     }
 
+    /* Atribui a descrição */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
+    /* Retorna o stock */
     public int getStock() {
         return stock;
     }
 
+    /* Atribui o stock */
     public void setStock(int stock) {
         this.stock = stock;
     }
 
+    /* Retorna o preço */
     public double getPreco() {
         return this.preco;
     }
 
+    /* Atribui o preço */
     public void setPreco(double preco) {
         this.preco = preco;
     }
 
+    /* Retorna o IVA */
     public int getIva() {
         return this.iva;
     }
 
+    /* Atribui o IVA */
     public void setIva(int iva) {
         this.iva = iva;
     }
 
+    /* Retorna a data de validade */
     public LocalDate getDate() {
         return this.validade;
     }
 
+    /* Atribui a data de validade */
     public void setDate(LocalDate date) {
         this.validade = date;
     }
 
+    /* Atribui a data de validade */
     public void setValidade(LocalDate validade) {
         this.validade = validade;
     }
 
+    /* Retorna a data de validade */
     public LocalDate getValidade() {
         return this.validade;
     }
 
+    /* Formata os dados do produto */
     @Override
     public String toString() {
         String str = "";

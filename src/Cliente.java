@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Cliente {
-    /* variaveis objeto */
+    /* Variáveis do objeto */
     private String nome;
     private int nif;
     private Morada morada;
@@ -15,52 +15,52 @@ public class Cliente {
         this.historico = historico;
     }
 
-    /* retorna nome */
+    /* Retorna o nome */
     public String getNome() {
         return this.nome;
     }
 
-    /* atribuir nome */
+    /* Atribui o nome */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /* retorna nif */
+    /* Retorna o NIF */
     public int getNif() {
         return this.nif;
     }
 
-    /* atribuir nif */
+    /* Atribui o NIF */
     public void setNif(int nif) {
         this.nif = nif;
     }
 
-    /* retorna morada */
+    /* Retorna a morada */
     public Morada getMorada() {
         return this.morada;
     }
 
-    /* atribuir morada */
+    /* Atribui a morada */
     public void setMorada(Morada morada) {
         this.morada = morada;
     }
 
-    /* retorna Historico */
+    /* Retorna o histórico */
     public ArrayList<Vendas> getHistorico() {
         return this.historico;
     }
 
-    /* adiciona historico */
+    /* Atribui o histórico */
     public void setHistorico(ArrayList<Vendas> historico) {
         this.historico = historico;
     }
 
-    /* adiciona venda */
+    /* Adiciona uma venda ao histórico */
     public void addVendaToHistorico(Vendas venda) {
         this.historico.add(venda);
     }
 
-    /* formata dados dos clientes */
+    /* Formata os dados dos clientes */
     @Override
     public String toString() {
         String fichaCliente = "";
