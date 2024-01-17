@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Classe Farmacia que implementa InterfaceFarma.
@@ -135,6 +136,123 @@ public class Farmacia implements InterfaceFarma {
      */
     public ArrayList<Cliente> getClientesIndisponiveis() {
         return this.clientesIndisponiveis;
+    }
+
+    public int getClientByName(Scanner scan) {
+        System.out.print("Nome do Cliente: ");
+        String name = scan.nextLine();
+        ArrayList<Cliente> matchingClients = new ArrayList<>();
+        System.out.println();
+        for (Cliente cliente : this.getClientes()) {
+            if (cliente.getNome().toLowerCase().contains(name.toLowerCase())) {
+                matchingClients.add(cliente);
+            }
+        }
+        if (matchingClients.isEmpty()) {
+            System.out.println("Não existem clientes com esse nome: " + name);
+            return -1;
+        } else {
+            for (int i = 0; i < matchingClients.size(); i++) {
+                System.out.println(
+                        "   " + (i + 1) + " - " + matchingClients.get(i).getNome() + " - "
+                                + matchingClients.get(i).getNif());
+            }
+            System.out.println();
+
+            int clientIndex = Main.getMenuChoiceWithIndex(scan);
+
+            Cliente selectedClient = matchingClients.get(clientIndex);
+            System.out.println();
+            System.out.println("Selecionou: " + selectedClient);
+            return clientIndex;
+        }
+    }
+
+    public int getClientByNIF(Scanner scan) {
+        System.out.print("NIF do Cliente: ");
+        int NIF = scan.nextInt();
+        scan.nextLine();
+
+        for (int i = 0; i < this.clientes.size(); i++) {
+            if (this.clientes.get(i).getNif() == NIF) {
+                System.out.println(this.clientes.get(i));
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void mostrarCategorias() {
+        int categoriaIndex = 1;
+        for (Categoria categoria : Categoria.values()) {
+            System.out.println(categoriaIndex + " - " + categoria.getDescricao());
+            categoriaIndex++;
+        }
+        System.out.println();
+    }
+
+    public void listarProdutos() {
+        int listaProdutosIndex = 1;
+        for (Produto listProduto : this.getProdutos()) {
+            System.out.println("    " + listaProdutosIndex + " - " + listProduto.getNome());
+            listaProdutosIndex++;
+        }
+    }
+
+    public void listarProdutosIndisponiveis() {
+        int listaProdutosIndex = 1;
+        for (Produto listProduto : this.getProdutosIndisponiveis()) {
+            System.out.println("    " + listaProdutosIndex + " - " + listProduto.getNome());
+            listaProdutosIndex++;
+        }
+    }
+
+    public ArrayList<Produto> getProductosPorCategoria(Categoria categoria) {
+        ArrayList<Produto> produtosCategoria = new ArrayList<>();
+        for (Produto produto : this.getProdutos()) {
+            if (produto.getCategoria() == categoria) {
+                produtosCategoria.add(produto);
+            }
+        }
+        return produtosCategoria;
+    }
+
+    public void updateStock(ArrayList<Produto> produtos) {
+        for (Produto pEscolhido : produtos) {
+            for (Produto pRegistado : this.getProdutos()) {
+                if (pEscolhido.equals(pRegistado)) {
+                    pRegistado.setStock(pRegistado.getStock() - 1);
+                    if (pRegistado.getStock() < 1) {
+                        this.removeProduto(pRegistado);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    public void listarClientes() {
+        int listaClientesIndex = 1;
+        for (Cliente listaClientes : this.getClientes()) {
+            System.out.println("    " + listaClientesIndex + " - " + listaClientes.getNome() + " | "
+                    + listaClientes.getNif());
+            listaClientesIndex++;
+        }
+    }
+
+    public void listarClientesIndisponiveis() {
+        int listaClientesIndex = 1;
+        for (Cliente listaClientes : this.getClientesIndisponiveis()) {
+            System.out.println("    " + listaClientesIndex + " - " + listaClientes.getNome() + " | "
+                    + listaClientes.getNif());
+            listaClientesIndex++;
+        }
+    }
+
+    public void mostrarInformacaoCliente(int escolhaCliente) {
+        System.out.println("Informação do cliente: ");
+        Cliente clienteInfo = this.getClientes().get(escolhaCliente);
+        System.out.println(clienteInfo);
     }
 
 }

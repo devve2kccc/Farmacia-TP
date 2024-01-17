@@ -6,19 +6,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class Main {
-    static NumberFormat numberFormat = Utils.getNumberFormat();
 
-    static Farmacia farmacia = new Farmacia();
+    private static final String INVALID_OPTION = "Digito Invalido. Tente Novamente.";
+    private static NumberFormat numberFormat = Utils.getNumberFormat();
 
-    public static void printReceipt(int clientIndex, int ultimaVenda) {
-        System.out.println("-------- Compra Finalizada! --------");
-        System.out.println("NIF: " + farmacia.getClientes().get(clientIndex).getNif());
-        System.out.println("Produtos comprados:");
-        for (Produto produtoVendido : farmacia.getVendas().get(ultimaVenda).getProduto()) {
-            System.out.println(produtoVendido.getNome());
-        }
-        System.out.println("Total: " + numberFormat.format(farmacia.getVendas().get(ultimaVenda).getTotal()));
-    }
+    private static Farmacia farmacia = new Farmacia();
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -39,64 +31,26 @@ public class Main {
         farmacia.insereCliente(
                 new Cliente("Alvaro Fernandes", 227311388, new Morada("Travessa", "Barcelos"), new ArrayList<>()));
 
-        int opcao = -1;
-
+        int opcao;
         do {
-            do {
-                try {
-                    System.out.println(" \n - - - Menu Principal - - - ");
-                    System.out.println(" 1 - Menu de Administração");
-                    System.out.println(" 2 - Menu Estatísticas");
-                    System.out.println(" 0 - Fechar");
-
-                    System.out.print("Opção: ");
-                    opcao = scan.nextInt();
-                    scan.nextLine();
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalido! Digite um numero.");
-                    scan.nextLine();
-                }
-            } while (opcao < 0 || opcao > 2);
+            opcao = getMainMenuChoice(scan);
 
             switch (opcao) {
                 case 1:
-                    System.out.println(" \n - - Menu de Administração - - ");
-                    System.out.println(" 1 - Registar Venda");
-                    System.out.println(" 2 - Registar Produto");
-                    System.out.println(" 3 - Registar Cliente");
-                    System.out.println(" 4 - Listar Produtos");
-                    System.out.println(" 5 - Listar Clientes");
-                    System.out.println(" 6 - Alterar Produtos");
-                    System.out.println(" 7 - Alterar Clientes");
-                    System.out.println(" 0 - Voltar");
-
-                    int opcao2 = -1;
-                    do {
-                        try {
-                            System.out.print("Insira a sua opção: ");
-                            opcao2 = scan.nextInt();
-                            scan.nextLine();
-                        } catch (InputMismatchException e) {
-                            System.out.println("Invalido! Digite um numero.");
-                            scan.nextLine();
-                        }
-                    } while (opcao2 < 1 || opcao2 > 8);
+                    int opcao2 = getAdminMenuChoice(scan);
 
                     switch (opcao2) {
                         case 1:
-                            System.out.println("\n1 - Procurar Cliente por:");
+                            System.out.println("\n Procurar Cliente por:");
                             System.out.println("   1 - Nome");
                             System.out.println("   2 - NIF");
                             System.out.println("   0 - Voltar");
-                            System.out.print("Escolha a opção: ");
                             int o = -1;
 
-                            try {
-                                o = scan.nextInt();
-                                scan.nextLine();
-                            } catch (Exception e) {
-                                System.out.println("Invalido! Digite um numero.");
-                                scan.nextLine();
+                            o = getMenuChoice(scan);
+
+                            if (o == 0) {
+                                break;
                             }
 
                             System.out.println();
@@ -105,108 +59,53 @@ public class Main {
 
                             switch (o) {
                                 case 1:
-                                    System.out.print("Nome do Cliente: ");
-                                    String name = scan.nextLine();
-                                    ArrayList<Cliente> matchingClients = new ArrayList<>();
-                                    System.out.println();
-                                    for (Cliente cliente : farmacia.getClientes()) {
-                                        if (cliente.getNome().toLowerCase().contains(name.toLowerCase())) {
-                                            matchingClients.add(cliente);
-                                        }
-                                    }
-                                    if (matchingClients.isEmpty()) {
-                                        System.out.println("Não existem clientes com esse nome: " + name);
-                                    } else {
-                                        for (int i = 0; i < matchingClients.size(); i++) {
-                                            System.out.println(
-                                                    "   " + (i + 1) + " - " + matchingClients.get(i).getNome() + " - "
-                                                            + matchingClients.get(i).getNif());
-                                        }
-                                        System.out.println();
-                                        System.out.print("Qual Cliente: ");
-
-                                        try {
-                                            clientIndex = scan.nextInt() - 1;
-                                        } catch (InputMismatchException e) {
-                                            System.out.println("Invalido! Digite um numero.");
-                                            scan.nextLine();
-                                        }
-
-                                        Cliente selectedClient = matchingClients.get(clientIndex);
-                                        System.out.println();
-                                        System.out.println("Selecionou: " + selectedClient);
+                                    clientIndex = farmacia.getClientByName(scan);
+                                    if (clientIndex != -1) {
                                         clienteExist = true;
                                     }
                                     break;
                                 case 2:
-                                    System.out.print("NIF do Cliente: ");
-                                    int NIF = -1;
-
-                                    try {
-                                        NIF = scan.nextInt();
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido! Digite um numero.");
-                                        scan.nextLine();
+                                    clientIndex = farmacia.getClientByNIF(scan);
+                                    if (clientIndex != -1) {
+                                        clienteExist = true;
                                     }
-
-                                    for (Cliente cliente : farmacia.getClientes()) {
-                                        if (cliente.getNif() == NIF) {
-                                            System.out.println(cliente);
-                                            clienteExist = true;
-                                            clientIndex = farmacia.getClientes().indexOf(cliente);
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                case 0:
                                     break;
 
                                 default:
-                                    System.out.println("Opçao invalida");
+                                    System.out.println(INVALID_OPTION);
                             }
 
                             if (clienteExist) {
                                 ArrayList<Produto> produtosEscolhicos = new ArrayList<>();
-                                int categoriaEscolhidaIndex = -1;
-                                int produtoEscolhidoIndex = -1;
-
+                                int categoriaEscolhidaIndex;
+                                int produtoEscolhidoIndex;
                                 do {
                                     System.out.println();
-                                    int categoriaIndex = 1;
-                                    for (Categoria categoria : Categoria.values()) {
-                                        System.out.println(categoriaIndex + " - " + categoria.getDescricao());
-                                        categoriaIndex++;
-                                    }
+
+                                    farmacia.mostrarCategorias();
                                     System.out.println("0 - Finalizar compra");
                                     System.out.println();
-                                    System.out.print("Categoria: ");
 
-                                    try {
-                                        categoriaEscolhidaIndex = scan.nextInt();
-                                        scan.nextLine();
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido! Digite um numero.");
-                                        scan.nextLine();
-                                    }
+                                    categoriaEscolhidaIndex = getMenuChoiceWithIndex(scan);
 
                                     if (categoriaEscolhidaIndex == 0) {
-                                        System.out.print("Tem certeza que deseja finalizar a compra? (Y/N): ");
-                                        char confirm = scan.next().charAt(0);
-                                        if (confirm == 'Y' || confirm == 'y') {
-                                            break;
+                                        if (produtosEscolhicos.isEmpty()) {
+                                            System.out.println(
+                                                    "Você não tem produtos no carrinho. Deseja cancelar a compra?");
+                                            if (confirmar(scan)) {
+                                                return;
+                                            } else {
+                                                continue;
+                                            }
                                         } else {
-                                            continue;
+                                            break;
                                         }
                                     }
 
-                                    Categoria categoriaEscolhida = Categoria.values()[categoriaEscolhidaIndex - 1];
+                                    Categoria categoriaEscolhida = Categoria.values()[categoriaEscolhidaIndex];
 
-                                    ArrayList<Produto> produtosCategoria = new ArrayList<>();
-                                    for (Produto produto : farmacia.getProdutos()) {
-                                        if (produto.getCategoria() == categoriaEscolhida) {
-                                            produtosCategoria.add(produto);
-                                        }
-                                    }
+                                    ArrayList<Produto> produtosCategoria = farmacia
+                                            .getProductosPorCategoria(categoriaEscolhida);
 
                                     do {
                                         int produtoIndex = 1;
@@ -217,17 +116,11 @@ public class Main {
 
                                         System.out.println(
                                                 "Selecione todos os produtos - Pressione 0 para voltar ao menu de categorias.");
-                                        System.out.print("Produto: ");
 
-                                        try {
-                                            produtoEscolhidoIndex = scan.nextInt();
-                                        } catch (InputMismatchException e) {
-                                            System.out.println("Invalido! Digite um numero.");
-                                            scan.nextLine();
-                                        }
+                                        produtoEscolhidoIndex = getMenuChoiceWithIndex(scan);
 
                                         if (produtoEscolhidoIndex != 0) {
-                                            produtosEscolhicos.add(produtosCategoria.get(produtoEscolhidoIndex - 1));
+                                            produtosEscolhicos.add(produtosCategoria.get(produtoEscolhidoIndex));
                                             System.out.println("Produto adicionado ao carrinho!");
                                             break;
                                         }
@@ -235,102 +128,37 @@ public class Main {
                                 } while (categoriaEscolhidaIndex != 0);
 
                                 int ultimaVenda = farmacia.getVendas().size();
-                                Vendas venda = new Vendas(ultimaVenda + 1,
-                                        LocalDate.now(),
-                                        farmacia.getClientes().get(clientIndex),
-                                        produtosEscolhicos);
+                                Vendas venda = new Vendas(ultimaVenda + 1, LocalDate.now(),
+                                        farmacia.getClientes().get(clientIndex), produtosEscolhicos);
                                 farmacia.getClientes().get(clientIndex).addVendaToHistorico(venda);
                                 farmacia.insereVenda(venda);
 
                                 printReceipt(clientIndex, ultimaVenda);
 
-                                ArrayList<Produto> produtosRegistados = farmacia.getProdutos();
-                                for (Produto pEscolhido : produtosEscolhicos) {
-                                    for (Produto pRegistado : produtosRegistados) {
-                                        if (pEscolhido.equals(pRegistado)) {
-                                            pRegistado.setStock(pRegistado.getStock() - 1);
-                                            if (pRegistado.getStock() < 1) {
-                                                farmacia.removeProduto(pRegistado);
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                farmacia.setProdutos(produtosRegistados);
+                                farmacia.updateStock(produtosEscolhicos);
 
                             } else {
-                                System.out.println("Cliente nao existe!!!.");
+                                System.out.println("Cliente nao existe. Deseja criar?");
+
+                                if (confirmar(scan)) {
+                                    scan.nextLine();
+                                    registarCliente(scan, farmacia);
+                                } else {
+                                    break;
+                                }
                             }
                             break;
                         case 2:
-                            System.out.println("Registar Produto: \n");
-
-                            for (Categoria categoria : Categoria.values()) {
-                                System.out.println((categoria.ordinal() + 1) + " - " + categoria.getDescricao());
-                            }
-
-                            int escolha = -1;
-                            try {
-                                System.out.print("Escolha a categoria:");
-                                escolha = scan.nextInt();
-                            } catch (InputMismatchException e) {
-                                System.out.println("Invalido! Insira um valor correto!.");
-                                scan.nextLine();
-                            }
-
-                            scan.nextLine();
-
-                            if (escolha < 1 || escolha > Categoria.values().length) {
-                                System.out.println("Categoria nao existente!");
-                            } else {
-                                Categoria categoriaEscolhida = Categoria.values()[escolha - 1];
-
-                                System.out.print("Nome: ");
-                                String nomeMedi = scan.nextLine();
-                                System.out.print("Descrição: ");
-                                String descricaoMedi = scan.nextLine();
-                                System.out.print("Stock: ");
-                                int stock = scan.nextInt();
-                                scan.nextLine();
-                                System.out.print("Preço: ");
-                                double precoMedi = scan.nextDouble();
-                                System.out.print("Iva: ");
-                                int ivaMedi = scan.nextInt();
-                                scan.nextLine();
-                                System.out.print("Validade (yyyy-mm-dd): ");
-                                String validadeMedi = scan.nextLine();
-                                LocalDate validade = LocalDate.parse(validadeMedi);
-
-                                Produto produto = new Produto(categoriaEscolhida, nomeMedi, descricaoMedi, stock,
-                                        precoMedi, ivaMedi, validade);
-
+                            Produto produto = registarProduto(scan, farmacia);
+                            if (produto != null) {
                                 farmacia.insereProduto(produto);
-
-                                System.out.println("Produto: " + nomeMedi + " adicionado com sucesso!!!");
+                                System.out.println("Produto: " + produto.getNome() + " adicionado com sucesso.");
+                            } else {
+                                System.out.println("Registro de produto cancelado.");
                             }
                             break;
                         case 3:
-                            System.out.println("Registar Cliente\n");
-
-                            System.out.print("Nome do Cliente: ");
-                            String nomeCliente = scan.nextLine();
-
-                            System.out.print("NIF: ");
-                            int nifCliente = scan.nextInt();
-                            scan.nextLine();
-
-                            System.out.print("Morada do Cliente: ");
-                            String localCliente = scan.nextLine();
-
-                            System.out.print("Localidade do Cliente: ");
-                            String localidadeCliente = scan.nextLine();
-
-                            Cliente novoCliente = new Cliente(nomeCliente, nifCliente,
-                                    new Morada(localCliente, localidadeCliente), new ArrayList<>());
-                            farmacia.insereCliente(novoCliente);
-
-                            System.out.println("Cliente registado com sucesso! \n");
+                            registarCliente(scan, farmacia);
                             break;
 
                         case 4:
@@ -338,18 +166,9 @@ public class Main {
                             System.out.println("    1 - Listar todos");
                             System.out.println("    2 - Listar por categorias");
                             System.out.println("    3 - Listar produtos indisponiveis");
-                            System.out.println("    4 - Voltar");
+                            System.out.println("    0 - Voltar");
 
-                            int listP = -1;
-
-                            try {
-                                System.out.print("Escolha: ");
-                                listP = scan.nextInt();
-                                scan.nextLine();
-                            } catch (InputMismatchException e) {
-                                System.out.println("Invalido! Digite um numero.");
-                                scan.nextLine();
-                            }
+                            int listP = getMenuChoice(scan);
 
                             switch (listP) {
                                 case 1:
@@ -359,32 +178,19 @@ public class Main {
                                     }
                                     break;
                                 case 2:
-                                    for (Categoria categorias : Categoria.values()) {
-                                        System.out.println(
-                                                (categorias.ordinal() + 1) + " - " + categorias.getDescricao());
-                                    }
+                                    farmacia.mostrarCategorias();
 
-                                    int categoriaEs = -1;
-
-                                    try {
-                                        System.out.print("Qual categoria: ");
-                                        categoriaEs = scan.nextInt() - 1;
-                                        scan.nextLine();
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
+                                    int categoriaEs = getMenuChoiceWithIndex(scan);
 
                                     Categoria catEs = Categoria.values()[categoriaEs];
 
                                     System.out.println();
                                     System.out.println(
                                             "Produtos da categoria: " + Categoria.values()[categoriaEs].getDescricao());
-                                    for (Produto listProduto : farmacia.getProdutos()) {
-                                        if (listProduto.getCategoria() == catEs) {
-                                            System.out.println("    " + listProduto.getNome() + " | " + "Stock: "
-                                                    + listProduto.getStock());
-                                        }
+                                    ArrayList<Produto> produtosCategoria = farmacia.getProductosPorCategoria(catEs);
+                                    for (Produto listProduto : produtosCategoria) {
+                                        System.out.println("    " + listProduto.getNome() + " | " + "Stock: "
+                                                + listProduto.getStock());
                                     }
 
                                     break;
@@ -394,42 +200,22 @@ public class Main {
                                     }
                                     break;
 
-                                case 4:
+                                case 0:
                                     break;
 
                                 default:
-                                    System.out.println("Opção Invalida");
-                                    break;
+                                    System.out.println(INVALID_OPTION);
                             }
                             break;
                         case 5:
-                            System.out.println(" \n Listar Clientes: ");
-                            int listaClientesIndex = 1;
-                            for (Cliente listaClientes : farmacia.getClientes()) {
-                                System.out.println("    " + listaClientesIndex + " - " + listaClientes.getNome() + " | "
-                                        + listaClientes.getNif());
-                                listaClientesIndex++;
-                            }
-                            int escolhaCliente = -1;
-
-                            try {
-                                System.out.print(
-                                        "Escolha cliente para ver mais informaçao ou pressione 0 para voltar!");
-                                escolhaCliente = scan.nextInt() - 1;
-                                scan.nextLine();
-                            } catch (InputMismatchException e) {
-                                System.out.println("Invalido. Digite um numero.");
-                                scan.nextLine();
-                            }
+                            farmacia.listarClientes();
+                            int escolhaCliente = getMenuChoiceWithIndex(scan);
 
                             if (escolhaCliente == -1) {
                                 continue;
                             }
 
-                            System.out.println("Informação do cliente: ");
-                            Cliente clienteInfo = farmacia.getClientes().get(escolhaCliente);
-
-                            System.out.println(clienteInfo);
+                            farmacia.mostrarInformacaoCliente(escolhaCliente);
 
                             break;
                         case 6:
@@ -439,163 +225,31 @@ public class Main {
                             System.out.println("    3 - OutOfStock");
                             System.out.println("    0 - Voltar");
 
-                            int prodAlterar = -1;
-
-                            try {
-                                System.out.print("Escolha: ");
-                                prodAlterar = scan.nextInt();
-                                scan.nextLine();
-                            } catch (Exception e) {
-                                System.out.println("Invalido. Tente novamente");
-                                scan.nextLine();
-                            }
+                            int prodAlterar = getMenuChoice(scan);
 
                             switch (prodAlterar) {
                                 case 1:
-                                    System.out.println("-- Alterar produto --");
-                                    int listaProdutosIndex = 1;
-                                    for (Produto listProduto : farmacia.getProdutos()) {
-                                        System.out.println("    " + listaProdutosIndex + " - " + listProduto.getNome());
-                                        listaProdutosIndex++;
-                                    }
-
-                                    System.out.println("Digite 0 para voltar!");
-
-                                    int listaChoice = -1;
-
-                                    try {
-                                        System.out.print("Qual Produto: ");
-                                        listaChoice = scan.nextInt() - 1;
-                                        scan.nextLine();
-                                        if (listaChoice == -1) {
-                                            break;
-                                        }
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
-
-                                    System.out.println();
-                                    System.out.println(farmacia.getProdutos().get(listaChoice));
-
-                                    System.out.println("Produto: " + farmacia.getProdutos().get(listaChoice).getNome());
-                                    System.out.println("  1 - Nome");
-                                    System.out.println("  2 - Descrição");
-                                    System.out.println("  3 - Stock");
-                                    System.out.println("  4 - Preço");
-                                    System.out.println("  5 - Iva");
-                                    System.out.println("  6 - Validade");
-                                    System.out.println(" 7 - Voltar");
-
-                                    int changeChoice = -1;
-
-                                    try {
-                                        System.out.print("Oque deseja alterar: ");
-                                        changeChoice = scan.nextInt();
-                                        scan.nextLine();
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
-
-                                    switch (changeChoice) {
-                                        case 1:
-                                            System.out.print("Nome: ");
-                                            String nome = scan.nextLine();
-                                            farmacia.getProdutos().get(listaChoice).setNome(nome);
-                                            break;
-                                        case 2:
-                                            System.out.print("Descrição: ");
-                                            String descricao = scan.nextLine();
-                                            farmacia.getProdutos().get(listaChoice).setDescricao(descricao);
-                                            break;
-                                        case 3:
-                                            System.out.print("Stock: ");
-                                            int stock = scan.nextInt();
-                                            farmacia.getProdutos().get(listaChoice).setStock(stock);
-                                            break;
-                                        case 4:
-                                            System.out.print("Preço: ");
-                                            double preco = scan.nextDouble();
-                                            farmacia.getProdutos().get(listaChoice).setPreco(preco);
-                                            break;
-                                        case 5:
-                                            System.out.print("Iva: ");
-                                            int iva = scan.nextInt();
-                                            farmacia.getProdutos().get(listaChoice).setIva(iva);
-                                            break;
-                                        case 6:
-                                            System.out.print("Validade: ");
-                                            String validadeMedi = scan.nextLine();
-                                            try {
-                                                LocalDate validade = LocalDate.parse(validadeMedi);
-                                                farmacia.getProdutos().get(listaChoice).setValidade(validade);
-                                            } catch (DateTimeParseException e) {
-                                                System.out.println(
-                                                        "Formato errado. Tente novamente com: yyyy-mm-dd.");
-                                            }
-                                            break;
-                                        case 7:
-                                            break;
-
-                                        default:
-                                            System.out.println("Escolha Invalida!");
-                                            break;
-                                    }
+                                    alterarProduto(farmacia, scan);
                                     break;
                                 case 2:
                                     System.out.println("-- Remover produto --");
-                                    int listaProdutosIndex2 = 1;
-                                    for (Produto listProduto : farmacia.getProdutos()) {
-                                        System.out
-                                                .println("    " + listaProdutosIndex2 + " - " + listProduto.getNome());
-                                        listaProdutosIndex2++;
-                                    }
+                                    farmacia.listarProdutos();
 
                                     System.out.println(" \n Digite 0 para voltar!");
 
-                                    int listaChoice2 = -1;
-
-                                    try {
-                                        System.out.print("Qual Produto: ");
-                                        listaChoice2 = scan.nextInt() - 1;
-                                        scan.nextLine();
-                                        if (listaChoice2 == -1) {
-                                            break;
-                                        }
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
+                                    int listaChoice2 = getMenuChoiceWithIndex(scan);
 
                                     farmacia.removeProduto(farmacia.getProdutos().get(listaChoice2));
 
                                     break;
                                 case 3:
                                     System.out.println("-- Reativar produto --");
-                                    int listaIndsProdutosIndex2 = 1;
-                                    for (Produto listProduto : farmacia.getProdutosIndisponiveis()) {
-                                        System.out
-                                                .println("    " + listaIndsProdutosIndex2 + " - "
-                                                        + listProduto.getNome());
-                                        listaIndsProdutosIndex2++;
-                                    }
+
+                                    farmacia.listarProdutosIndisponiveis();
 
                                     System.out.println(" \n Digite 0 para voltar!");
 
-                                    int listaIndsChoice2 = -1;
-
-                                    try {
-                                        System.out.print("Qual Produto: ");
-                                        listaIndsChoice2 = scan.nextInt() - 1;
-                                        scan.nextLine();
-                                        if (listaIndsChoice2 == -1) {
-                                            break;
-                                        }
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
+                                    int listaIndsChoice2 = getMenuChoiceWithIndex(scan);
 
                                     System.out.println();
                                     System.out.print("  Stock: ");
@@ -608,8 +262,7 @@ public class Main {
                                     break;
 
                                 default:
-                                    System.out.println("Invalido. Digite um numero!");
-                                    break;
+                                    System.out.println(INVALID_OPTION);
                             }
                             break;
                         case 7:
@@ -620,192 +273,31 @@ public class Main {
                             System.out.println("    3 - Clientes Inativos");
                             System.out.println("    0 - Voltar");
 
-                            int clientAlterar = -1;
-
-                            try {
-                                System.out.print("Escolha: ");
-                                clientAlterar = scan.nextInt();
-                                scan.nextLine();
-                            } catch (Exception e) {
-                                System.out.println("Invalido. Tente novamente");
-                                scan.nextLine();
-                            }
+                            int clientAlterar = getMenuChoice(scan);
 
                             switch (clientAlterar) {
                                 case 1:
-                                    System.out.println("-- Alterar cliente --");
-                                    int listaClientesIndexChange = 1;
-                                    for (Cliente listCliente : farmacia.getClientes()) {
-                                        System.out.println(
-                                                "    " + listaClientesIndexChange + " - " + listCliente.getNome());
-                                        listaClientesIndexChange++;
-                                    }
-
-                                    System.out.println("Digite 0 para voltar!");
-
-                                    int listaClienteChoice = -1;
-
-                                    try {
-                                        System.out.print("Qual Cliente: ");
-                                        listaClienteChoice = scan.nextInt() - 1;
-                                        scan.nextLine();
-                                        if (listaClienteChoice == -1) {
-                                            break;
-                                        }
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
-
-                                    System.out.println();
-                                    System.out.println(farmacia.getClientes().get(listaClienteChoice));
-
-                                    System.out.println(
-                                            "Cliente: " + farmacia.getClientes().get(listaClienteChoice).getNome());
-                                    System.out.println("    1 - Nome");
-                                    System.out.println("    2 - NIF");
-                                    System.out.println("    3 - Morada");
-                                    System.out.println("    4 - Vendas");
-                                    System.out.println("    0 - Voltar");
-
-                                    int changeClienteChoice = -1;
-
-                                    try {
-                                        System.out.print("Oque deseja alterar: ");
-                                        changeClienteChoice = scan.nextInt();
-                                        scan.nextLine();
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
-
-                                    switch (changeClienteChoice) {
-                                        case 1:
-                                            System.out.print("Nome: ");
-                                            String nomeClienteSet = scan.nextLine();
-                                            farmacia.getClientes().get(listaClienteChoice).setNome(nomeClienteSet);
-                                            break;
-
-                                        case 2:
-                                            System.out.print("NIF: ");
-                                            int nifClienteSet = scan.nextInt();
-                                            farmacia.getClientes().get(listaClienteChoice).setNif(nifClienteSet);
-                                            break;
-
-                                        case 3:
-                                            System.out.print("Rua: ");
-                                            String localClienteSet = scan.nextLine();
-                                            System.out.print("Localidade: ");
-                                            String localidadeClienteSet = scan.nextLine();
-                                            farmacia.getClientes().get(listaClienteChoice)
-                                                    .setMorada(new Morada(localClienteSet, localidadeClienteSet));
-                                            break;
-
-                                        case 4:
-                                            int comprasCounter = 1;
-                                            for (Vendas comprasClientes : farmacia.getClientes().get(listaClienteChoice)
-                                                    .getHistorico()) {
-                                                System.out.println("    " + comprasCounter + " - "
-                                                        + comprasClientes.getnumVenda() + " | "
-                                                        + comprasClientes.getDate() + " | "
-                                                        + comprasClientes.getTotal() + "\n");
-                                                comprasCounter++;
-                                            }
-
-                                            System.out.println("Digite 0 para voltar!");
-
-                                            int listaComprasChoice = -1;
-
-                                            try {
-                                                System.out.print("Qual compra: ");
-                                                listaComprasChoice = scan.nextInt() - 1;
-                                                scan.nextLine();
-                                                if (listaComprasChoice == -1) {
-                                                    break;
-                                                }
-                                            } catch (InputMismatchException e) {
-                                                System.out.println("Invalido. Tente novamente");
-                                                scan.nextLine();
-                                            }
-
-                                            System.out.println();
-                                            System.out.print("Deseja remover esta compra? Y/N: ");
-                                            char confirmation = scan.next().charAt(0);
-                                            confirmation = Character.toLowerCase(confirmation);
-                                            switch (confirmation) {
-                                                case 'y':
-                                                    farmacia.getClientes().get(listaClienteChoice).getHistorico()
-                                                            .remove(listaComprasChoice);
-                                                    break;
-                                                case 'n':
-                                                    break;
-
-                                                default:
-                                                    System.out.println("Insira um caracter valido!");
-                                            }
-
-                                            break;
-
-                                        case 0:
-                                            break;
-
-                                        default:
-                                            System.out.println("Incorreto");
-                                    }
+                                    alterarCliente(farmacia, scan);
                                     break;
 
                                 case 2:
                                     System.out.println("-- Remover cliente --");
-                                    int listaClientesIndexRemove = 1;
-                                    for (Cliente listCliente : farmacia.getClientes()) {
-                                        System.out.println(
-                                                "    " + listaClientesIndexRemove + " - " + listCliente.getNome());
-                                        listaClientesIndexRemove++;
-                                    }
+                                    farmacia.listarClientes();
 
                                     System.out.println("Digite 0 para voltar!");
 
-                                    int listaClienteChoiceRemove = -1;
-
-                                    try {
-                                        System.out.print("Qual Cliente: ");
-                                        listaClienteChoiceRemove = scan.nextInt() - 1;
-                                        scan.nextLine();
-                                        if (listaClienteChoiceRemove == -1) {
-                                            break;
-                                        }
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
+                                    int listaClienteChoiceRemove = getMenuChoiceWithIndex(scan);
 
                                     farmacia.removeCliente(farmacia.getClientes().get(listaClienteChoiceRemove));
                                     break;
 
                                 case 3:
                                     System.out.println("-- Reativar cliente --");
-                                    int listaClientesIndexReativar = 1;
-                                    for (Cliente listCliente : farmacia.getClientesIndisponiveis()) {
-                                        System.out.println(
-                                                "    " + listaClientesIndexReativar + " - " + listCliente.getNome());
-                                        listaClientesIndexReativar++;
-                                    }
+                                    farmacia.listarClientesIndisponiveis();
 
                                     System.out.println("Digite 0 para voltar!");
 
-                                    int listaClienteChoiceReativar = -1;
-
-                                    try {
-                                        System.out.print("Qual Cliente: ");
-                                        listaClienteChoiceReativar = scan.nextInt() - 1;
-                                        scan.nextLine();
-                                        if (listaClienteChoiceReativar == -1) {
-                                            break;
-                                        }
-                                    } catch (InputMismatchException e) {
-                                        System.out.println("Invalido. Tente novamente");
-                                        scan.nextLine();
-                                    }
+                                    int listaClienteChoiceReativar = getMenuChoiceWithIndex(scan);
 
                                     farmacia.insereCliente(
                                             farmacia.getClientesIndisponiveis().get(listaClienteChoiceReativar));
@@ -815,13 +307,13 @@ public class Main {
                                     break;
 
                                 default:
-                                    System.out.println("Opção INVALIDA!!!");
+                                    System.out.println(INVALID_OPTION);
                             }
                             break;
                         case 0:
                             break;
                         default:
-                            System.out.println("Opção INVALIDA!!!");
+                            System.out.println(INVALID_OPTION);
                     }
                     break;
 
@@ -860,17 +352,314 @@ public class Main {
                         case 0:
                             break;
                         default:
-                            System.out.println("Opção INVALIDA!!!");
+                            System.out.println(INVALID_OPTION);
                     }
                     break;
 
-                default:
-                    System.out.println("Opção INVALIDA!!!");
+                case 0:
                     break;
+
+                default:
+                    System.out.println(INVALID_OPTION);
             }
         } while (opcao != 0);
 
         scan.close();
+    }
+
+    public static int getAdminMenuChoice(Scanner scan) {
+        int opcao;
+        do {
+            System.out.println(" \n - - Menu de Administração - - ");
+            System.out.println(" 1 - Registar Venda");
+            System.out.println(" 2 - Registar Produto");
+            System.out.println(" 3 - Registar Cliente");
+            System.out.println(" 4 - Listar Produtos");
+            System.out.println(" 5 - Listar Clientes");
+            System.out.println(" 6 - Alterar Produtos");
+            System.out.println(" 7 - Alterar Clientes");
+            System.out.println(" 0 - Voltar");
+
+            opcao = getMenuChoice(scan);
+        } while (opcao < 0 || opcao > 7);
+        return opcao;
+    }
+
+    public static int getMainMenuChoice(Scanner scan) {
+        int opcao;
+        do {
+            System.out.println(" \n - - - Menu Principal - - - ");
+            System.out.println(" 1 - Menu de Administração");
+            System.out.println(" 2 - Menu Estatísticas");
+            System.out.println(" 0 - Fechar");
+
+            opcao = getMenuChoice(scan);
+        } while (opcao < 0 || opcao > 2);
+        return opcao;
+    }
+
+    private static int getMenuChoice(Scanner scan) {
+        int choice = -1;
+        while (true) {
+            try {
+                System.out.print("Escolha: ");
+                choice = scan.nextInt();
+                scan.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(INVALID_OPTION);
+                scan.nextLine();
+            }
+        }
+        return choice;
+    }
+
+    public static int getMenuChoiceWithIndex(Scanner scan) {
+        int choice = -1;
+        while (true) {
+            try {
+                System.out.print("Escolha: ");
+                choice = scan.nextInt() - 1;
+                scan.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(INVALID_OPTION);
+                scan.nextLine();
+            }
+        }
+        return choice;
+    }
+
+    public static boolean confirmar(Scanner scan) {
+        String confirm;
+        do {
+            System.out.print("Confirmar (Y/N): ");
+            confirm = scan.next().toLowerCase();
+            if (!confirm.equals("y") && !confirm.equals("n")) {
+                System.out.println("Entrada inválida. Por favor, insira Y para confirmar ou N para cancelar.");
+            }
+        } while (!confirm.equals("y") && !confirm.equals("n"));
+
+        return confirm.equals("y");
+    }
+
+    public static Cliente registarCliente(Scanner scan, Farmacia farmacia) {
+        System.out.println("\nRegistar Cliente");
+        System.out.print("Nome do Cliente: ");
+        String nomeCliente = scan.nextLine();
+
+        System.out.print("NIF: ");
+        int nifCliente = scan.nextInt();
+        scan.nextLine();
+
+        System.out.print("Morada do Cliente: ");
+        String localCliente = scan.nextLine();
+
+        System.out.print("Localidade do Cliente: ");
+        String localidadeCliente = scan.nextLine();
+
+        Cliente novoCliente = new Cliente(nomeCliente, nifCliente,
+                new Morada(localCliente, localidadeCliente), new ArrayList<>());
+        farmacia.insereCliente(novoCliente);
+
+        System.out.println("Cliente registado com sucesso! \n");
+
+        return novoCliente;
+    }
+
+    public static Produto registarProduto(Scanner scan, Farmacia farmacia) {
+        System.out.println("Registar Produto: \n");
+
+        farmacia.mostrarCategorias();
+        System.out.println("0 - Voltar");
+        int escolha;
+
+        do {
+            escolha = getMenuChoiceWithIndex(scan);
+        } while (escolha < -1 || escolha > 7);
+
+        if (escolha == -1) {
+            return null;
+        } else if (escolha >= Categoria.values().length) {
+            System.out.println("Categoria nao existente!");
+            return null;
+        } else {
+            Categoria categoriaEscolhida = Categoria.values()[escolha];
+
+            System.out.print("Nome: ");
+            String nomeMedi = scan.nextLine();
+            System.out.print("Descrição: ");
+            String descricaoMedi = scan.nextLine();
+            System.out.print("Stock: ");
+            int stock = scan.nextInt();
+            scan.nextLine();
+            System.out.print("Preço: ");
+            double precoMedi = scan.nextDouble();
+            System.out.print("Iva: ");
+            int ivaMedi = scan.nextInt();
+            scan.nextLine();
+            System.out.print("Validade (yyyy-mm-dd): ");
+            String validadeMedi = scan.nextLine();
+            LocalDate validade = LocalDate.parse(validadeMedi);
+
+            Produto produto = new Produto(categoriaEscolhida, nomeMedi, descricaoMedi, stock,
+                    precoMedi, ivaMedi, validade);
+
+            return produto;
+        }
+    }
+
+    public static void alterarProduto(Farmacia farmacia, Scanner scan) {
+        System.out.println("-- Alterar produto --");
+
+        farmacia.listarProdutos();
+
+        System.out.println("Digite 0 para voltar!");
+
+        int listaChoice = getMenuChoiceWithIndex(scan);
+
+        System.out.println();
+        System.out.println(farmacia.getProdutos().get(listaChoice));
+
+        System.out.println("Produto: " + farmacia.getProdutos().get(listaChoice).getNome());
+        System.out.println("  1 - Nome");
+        System.out.println("  2 - Descrição");
+        System.out.println("  3 - Stock");
+        System.out.println("  4 - Preço");
+        System.out.println("  5 - Iva");
+        System.out.println("  6 - Validade");
+        System.out.println("  0 - Voltar");
+
+        int changeChoice = getMenuChoice(scan);
+
+        switch (changeChoice) {
+            case 1:
+                System.out.print("Nome: ");
+                String nome = scan.nextLine();
+                farmacia.getProdutos().get(listaChoice).setNome(nome);
+                break;
+            case 2:
+                System.out.print("Descrição: ");
+                String descricao = scan.nextLine();
+                farmacia.getProdutos().get(listaChoice).setDescricao(descricao);
+                break;
+            case 3:
+                System.out.print("Stock: ");
+                int stock = scan.nextInt();
+                farmacia.getProdutos().get(listaChoice).setStock(stock);
+                break;
+            case 4:
+                System.out.print("Preço: ");
+                double preco = scan.nextDouble();
+                farmacia.getProdutos().get(listaChoice).setPreco(preco);
+                break;
+            case 5:
+                System.out.print("Iva: ");
+                int iva = scan.nextInt();
+                farmacia.getProdutos().get(listaChoice).setIva(iva);
+                break;
+            case 6:
+                System.out.print("Validade: ");
+                String validadeMedi = scan.nextLine();
+                try {
+                    LocalDate validade = LocalDate.parse(validadeMedi);
+                    farmacia.getProdutos().get(listaChoice).setValidade(validade);
+                } catch (DateTimeParseException e) {
+                    System.out.println(
+                            "Formato errado. Tente novamente com: yyyy-mm-dd.");
+                }
+                break;
+            case 0:
+                break;
+
+            default:
+                System.out.println(INVALID_OPTION);
+        }
+    }
+
+    public static void alterarCliente(Farmacia farmacia, Scanner scan) {
+        System.out.println("-- Alterar cliente --");
+        farmacia.listarClientes();
+
+        System.out.println("Digite 0 para voltar!");
+
+        int listaClienteChoice = getMenuChoiceWithIndex(scan);
+
+        System.out.println();
+        System.out.println(farmacia.getClientes().get(listaClienteChoice));
+
+        System.out.println("Cliente: " + farmacia.getClientes().get(listaClienteChoice).getNome());
+        System.out.println("    1 - Nome");
+        System.out.println("    2 - NIF");
+        System.out.println("    3 - Morada");
+        System.out.println("    4 - Vendas");
+        System.out.println("    0 - Voltar");
+
+        int changeClienteChoice = getMenuChoice(scan);
+
+        switch (changeClienteChoice) {
+            case 1:
+                System.out.print("Nome: ");
+                String nomeClienteSet = scan.nextLine();
+                farmacia.getClientes().get(listaClienteChoice).setNome(nomeClienteSet);
+                break;
+
+            case 2:
+                System.out.print("NIF: ");
+                int nifClienteSet = scan.nextInt();
+                farmacia.getClientes().get(listaClienteChoice).setNif(nifClienteSet);
+                break;
+
+            case 3:
+                System.out.print("Rua: ");
+                String localClienteSet = scan.nextLine();
+                System.out.print("Localidade: ");
+                String localidadeClienteSet = scan.nextLine();
+                farmacia.getClientes().get(listaClienteChoice)
+                        .setMorada(new Morada(localClienteSet, localidadeClienteSet));
+                break;
+
+            case 4:
+                int comprasCounter = 1;
+                for (Vendas comprasClientes : farmacia.getClientes().get(listaClienteChoice)
+                        .getHistorico()) {
+                    System.out.println("    " + comprasCounter + " - "
+                            + comprasClientes.getnumVenda() + " | "
+                            + comprasClientes.getDate() + " | "
+                            + comprasClientes.getTotal() + "\n");
+                    comprasCounter++;
+                }
+
+                System.out.println("Digite 0 para voltar!");
+
+                int listaComprasChoice = getMenuChoiceWithIndex(scan);
+
+                System.out.println();
+                if (confirmar(scan)) {
+                    farmacia.getClientes().get(listaClienteChoice).getHistorico()
+                            .remove(listaComprasChoice);
+                } else {
+                    break;
+                }
+
+                break;
+
+            case 0:
+                break;
+
+            default:
+                System.out.println(INVALID_OPTION);
+        }
+    }
+
+    public static void printReceipt(int clientIndex, int ultimaVenda) {
+        System.out.println("-------- Compra Finalizada! --------");
+        System.out.println("NIF: " + farmacia.getClientes().get(clientIndex).getNif());
+        System.out.println("Produtos comprados:");
+        for (Produto produtoVendido : farmacia.getVendas().get(ultimaVenda).getProduto()) {
+            System.out.println(produtoVendido.getNome());
+        }
+        System.out.println("Total: " + numberFormat.format(farmacia.getVendas().get(ultimaVenda).getTotal()));
     }
 
 }
