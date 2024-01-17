@@ -47,7 +47,7 @@ public class Main {
                             System.out.println("   0 - Voltar");
                             int o = -1;
 
-                            o = getMenuChoice(scan);
+                            o = getMenuChoice(scan, 0, 2);
 
                             if (o == 0) {
                                 break;
@@ -86,7 +86,7 @@ public class Main {
                                     System.out.println("0 - Finalizar compra");
                                     System.out.println();
 
-                                    categoriaEscolhidaIndex = getMenuChoiceWithIndex(scan);
+                                    categoriaEscolhidaIndex = getMenuChoiceWithIndex(scan, 0, 8);
 
                                     if (categoriaEscolhidaIndex == 0) {
                                         if (produtosEscolhicos.isEmpty()) {
@@ -117,7 +117,8 @@ public class Main {
                                         System.out.println(
                                                 "Selecione todos os produtos - Pressione 0 para voltar ao menu de categorias.");
 
-                                        produtoEscolhidoIndex = getMenuChoiceWithIndex(scan);
+                                        produtoEscolhidoIndex = getMenuChoiceWithIndex(scan, 0,
+                                                produtosCategoria.size());
 
                                         if (produtoEscolhidoIndex != 0) {
                                             produtosEscolhicos.add(produtosCategoria.get(produtoEscolhidoIndex));
@@ -168,7 +169,7 @@ public class Main {
                             System.out.println("    3 - Listar produtos indisponiveis");
                             System.out.println("    0 - Voltar");
 
-                            int listP = getMenuChoice(scan);
+                            int listP = getMenuChoice(scan, 0, 3);
 
                             switch (listP) {
                                 case 1:
@@ -180,7 +181,7 @@ public class Main {
                                 case 2:
                                     farmacia.mostrarCategorias();
 
-                                    int categoriaEs = getMenuChoiceWithIndex(scan);
+                                    int categoriaEs = getMenuChoiceWithIndex(scan, 1, 8);
 
                                     Categoria catEs = Categoria.values()[categoriaEs];
 
@@ -209,10 +210,11 @@ public class Main {
                             break;
                         case 5:
                             farmacia.listarClientes();
-                            int escolhaCliente = getMenuChoiceWithIndex(scan);
+                            System.out.println("Digite 0 para voltar!");
+                            int escolhaCliente = getMenuChoiceWithIndex(scan, 0, farmacia.getClientes().size());
 
                             if (escolhaCliente == -1) {
-                                continue;
+                                break;
                             }
 
                             farmacia.mostrarInformacaoCliente(escolhaCliente);
@@ -225,7 +227,7 @@ public class Main {
                             System.out.println("    3 - OutOfStock");
                             System.out.println("    0 - Voltar");
 
-                            int prodAlterar = getMenuChoice(scan);
+                            int prodAlterar = getMenuChoice(scan, 0, 3);
 
                             switch (prodAlterar) {
                                 case 1:
@@ -237,7 +239,11 @@ public class Main {
 
                                     System.out.println(" \n Digite 0 para voltar!");
 
-                                    int listaChoice2 = getMenuChoiceWithIndex(scan);
+                                    int listaChoice2 = getMenuChoiceWithIndex(scan, 0, farmacia.getProdutos().size());
+
+                                    if (listaChoice2 == -1) {
+                                        break;
+                                    }
 
                                     farmacia.removeProduto(farmacia.getProdutos().get(listaChoice2));
 
@@ -249,7 +255,12 @@ public class Main {
 
                                     System.out.println(" \n Digite 0 para voltar!");
 
-                                    int listaIndsChoice2 = getMenuChoiceWithIndex(scan);
+                                    int listaIndsChoice2 = getMenuChoiceWithIndex(scan, 0,
+                                            farmacia.getClientesIndisponiveis().size());
+
+                                    if (listaIndsChoice2 == -1) {
+                                        break;
+                                    }
 
                                     System.out.println();
                                     System.out.print("  Stock: ");
@@ -273,7 +284,7 @@ public class Main {
                             System.out.println("    3 - Clientes Inativos");
                             System.out.println("    0 - Voltar");
 
-                            int clientAlterar = getMenuChoice(scan);
+                            int clientAlterar = getMenuChoice(scan, 0, 3);
 
                             switch (clientAlterar) {
                                 case 1:
@@ -286,7 +297,12 @@ public class Main {
 
                                     System.out.println("Digite 0 para voltar!");
 
-                                    int listaClienteChoiceRemove = getMenuChoiceWithIndex(scan);
+                                    int listaClienteChoiceRemove = getMenuChoiceWithIndex(scan, 0,
+                                            farmacia.getClientes().size());
+
+                                    if (listaClienteChoiceRemove == -1) {
+                                        break;
+                                    }
 
                                     farmacia.removeCliente(farmacia.getClientes().get(listaClienteChoiceRemove));
                                     break;
@@ -297,7 +313,12 @@ public class Main {
 
                                     System.out.println("Digite 0 para voltar!");
 
-                                    int listaClienteChoiceReativar = getMenuChoiceWithIndex(scan);
+                                    int listaClienteChoiceReativar = getMenuChoiceWithIndex(scan, 0,
+                                            farmacia.getClientesIndisponiveis().size());
+
+                                    if (listaClienteChoiceReativar == -1) {
+                                        break;
+                                    }
 
                                     farmacia.insereCliente(
                                             farmacia.getClientesIndisponiveis().get(listaClienteChoiceReativar));
@@ -369,65 +390,67 @@ public class Main {
 
     public static int getAdminMenuChoice(Scanner scan) {
         int opcao;
-        do {
-            System.out.println(" \n - - Menu de Administração - - ");
-            System.out.println(" 1 - Registar Venda");
-            System.out.println(" 2 - Registar Produto");
-            System.out.println(" 3 - Registar Cliente");
-            System.out.println(" 4 - Listar Produtos");
-            System.out.println(" 5 - Listar Clientes");
-            System.out.println(" 6 - Alterar Produtos");
-            System.out.println(" 7 - Alterar Clientes");
-            System.out.println(" 0 - Voltar");
 
-            opcao = getMenuChoice(scan);
-        } while (opcao < 0 || opcao > 7);
+        System.out.println(" \n - - Menu de Administração - - ");
+        System.out.println(" 1 - Registar Venda");
+        System.out.println(" 2 - Registar Produto");
+        System.out.println(" 3 - Registar Cliente");
+        System.out.println(" 4 - Listar Produtos");
+        System.out.println(" 5 - Listar Clientes");
+        System.out.println(" 6 - Alterar Produtos");
+        System.out.println(" 7 - Alterar Clientes");
+        System.out.println(" 0 - Voltar");
+
+        opcao = getMenuChoice(scan, 0, 7);
         return opcao;
     }
 
     public static int getMainMenuChoice(Scanner scan) {
-        int opcao;
-        do {
-            System.out.println(" \n - - - Menu Principal - - - ");
-            System.out.println(" 1 - Menu de Administração");
-            System.out.println(" 2 - Menu Estatísticas");
-            System.out.println(" 0 - Fechar");
+        System.out.println(" \n - - - Menu Principal - - - ");
+        System.out.println(" 1 - Menu de Administração");
+        System.out.println(" 2 - Menu Estatísticas");
+        System.out.println(" 0 - Fechar");
 
-            opcao = getMenuChoice(scan);
-        } while (opcao < 0 || opcao > 2);
+        int opcao = getMenuChoice(scan, 0, 2);
         return opcao;
     }
 
-    private static int getMenuChoice(Scanner scan) {
-        int choice = -1;
+    private static int getMenuChoice(Scanner scan, int min, int max) {
+        int choice;
         while (true) {
             try {
                 System.out.print("Escolha: ");
                 choice = scan.nextInt();
                 scan.nextLine();
-                break;
+                if (choice < min || choice > max) {
+                    System.out.println("Escolha fora do intervalo. Tente novamente.");
+                } else {
+                    return choice;
+                }
             } catch (InputMismatchException e) {
                 System.out.println(INVALID_OPTION);
                 scan.nextLine();
             }
         }
-        return choice;
     }
 
-    public static int getMenuChoiceWithIndex(Scanner scan) {
-        int choice = -1;
+    public static int getMenuChoiceWithIndex(Scanner scan, int min, int max) {
+        int choice;
         while (true) {
             try {
                 System.out.print("Escolha: ");
-                choice = scan.nextInt() - 1;
+                choice = scan.nextInt();
                 scan.nextLine();
-                break;
+                if (choice < min || choice > max) {
+                    System.out.println("Escolha fora do intervalo. Tente novamente.");
+                } else {
+                    return choice - 1;
+                }
             } catch (InputMismatchException e) {
                 System.out.println(INVALID_OPTION);
                 scan.nextLine();
             }
         }
-        return choice;
     }
 
     public static boolean confirmar(Scanner scan) {
@@ -472,11 +495,8 @@ public class Main {
 
         farmacia.mostrarCategorias();
         System.out.println("0 - Voltar");
-        int escolha;
 
-        do {
-            escolha = getMenuChoiceWithIndex(scan);
-        } while (escolha < -1 || escolha > 7);
+        int escolha = getMenuChoiceWithIndex(scan, 0, 8);
 
         if (escolha == -1) {
             return null;
@@ -516,8 +536,11 @@ public class Main {
 
         System.out.println("Digite 0 para voltar!");
 
-        int listaChoice = getMenuChoiceWithIndex(scan);
+        int listaChoice = getMenuChoiceWithIndex(scan, 0, farmacia.getProdutos().size());
 
+        if (listaChoice == -1) {
+            return;
+        }
         System.out.println();
         System.out.println(farmacia.getProdutos().get(listaChoice));
 
@@ -530,7 +553,7 @@ public class Main {
         System.out.println("  6 - Validade");
         System.out.println("  0 - Voltar");
 
-        int changeChoice = getMenuChoice(scan);
+        int changeChoice = getMenuChoice(scan, 0, 6);
 
         switch (changeChoice) {
             case 1:
@@ -583,8 +606,11 @@ public class Main {
 
         System.out.println("Digite 0 para voltar!");
 
-        int listaClienteChoice = getMenuChoiceWithIndex(scan);
+        int listaClienteChoice = getMenuChoiceWithIndex(scan, 0, farmacia.getClientes().size());
 
+        if (listaClienteChoice == -1) {
+            return;
+        }
         System.out.println();
         System.out.println(farmacia.getClientes().get(listaClienteChoice));
 
@@ -595,7 +621,7 @@ public class Main {
         System.out.println("    4 - Vendas");
         System.out.println("    0 - Voltar");
 
-        int changeClienteChoice = getMenuChoice(scan);
+        int changeClienteChoice = getMenuChoice(scan, 0, 4);
 
         switch (changeClienteChoice) {
             case 1:
@@ -632,7 +658,8 @@ public class Main {
 
                 System.out.println("Digite 0 para voltar!");
 
-                int listaComprasChoice = getMenuChoiceWithIndex(scan);
+                int listaComprasChoice = getMenuChoiceWithIndex(scan, 0, farmacia.getClientes().get(listaClienteChoice)
+                        .getHistorico().size());
 
                 System.out.println();
                 if (confirmar(scan)) {

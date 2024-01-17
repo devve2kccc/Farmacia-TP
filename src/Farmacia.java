@@ -159,11 +159,11 @@ public class Farmacia implements InterfaceFarma {
             }
             System.out.println();
 
-            int clientIndex = Main.getMenuChoiceWithIndex(scan);
+            int clientIndex = Main.getMenuChoiceWithIndex(scan, 1, matchingClients.size());
 
             Cliente selectedClient = matchingClients.get(clientIndex);
             System.out.println();
-            System.out.println("Selecionou: " + selectedClient);
+            System.out.println("Selecionou: " + "\n" + selectedClient);
             return clientIndex;
         }
     }
