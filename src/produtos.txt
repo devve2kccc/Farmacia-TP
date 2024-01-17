@@ -1,0 +1,35 @@
+Produto,GERAL,Analgésico,Alívio para dores,50,5.0,10,2024-07-17
+Produto,GERAL,Anti-inflamatório,Reduz inflamações,30,8.0,15,2025-01-17
+Produto,GERAL,Descongestionante Nasal,Alívio para congestão nasal,40,7.0,5,2026-01-17
+Produto,GERAL,Antipirético,Reduz a febre,20,10.0,10,2025-07-17
+Produto,GERAL,Suplemento Vitamínico,Fornece nutrientes essenciais,60,15.0,5,2026-01-17
+
+Produto,MEDICAMENTO,Paracetamol,Analgésico e antipirético,200,5.0,10,2024-07-17
+Produto,MEDICAMENTO,Ibuprofeno,Anti-inflamatório,150,8.0,15,2025-01-17
+Produto,MEDICAMENTO,Cetirizina,Alívio para alergias,100,12.0,5,2026-01-17
+Produto,MEDICAMENTO,Omeprazol,Redutor de ácido,80,15.0,10,2025-07-17
+Produto,MEDICAMENTO,Vitamina D,Fortalecimento ósseo,120,7.0,5,2026-01-17
+
+Produto,COSMETICO,Creme Hidratante,Hidratação para a pele,80,25.0,10,2024-07-17
+Produto,COSMETICO,Sérum Anti-Envelhecimento,Reduz rugas,60,30.0,15,2025-01-17
+Produto,COSMETICO,Gloss Labial,Adiciona brilho aos lábios,40,15.0,5,2026-01-17
+Produto,COSMETICO,Condicionador Capilar,Suaviza o cabelo,100,12.0,10,2025-07-17
+Produto,COSMETICO,Perfume,Fragrância duradoura,30,50.0,20,2026-07-17
+
+Produto,HIGIENE,Pasta de Dentes,Proteção contra cáries,120,3.0,5,2024-07-17
+Produto,HIGIENE,Champô,Para cabelo saudável,90,10.0,10,2025-01-17
+Produto,HIGIENE,Gel de Banho,Fragrância refrescante,80,8.0,5,2026-01-17
+Produto,HIGIENE,Lâmina de Barbear,Barbear suave,50,5.0,10,2025-07-17
+Produto,HIGIENE,Desodorizante,Proteção duradoura,70,7.0,5,2026-01-17
+
+Produto,NUTRICIONAL,Proteína em Pó,Construção muscular,40,25.0,10,2024-07-17
+Produto,NUTRICIONAL,Suplemento de Ómega-3,Saúde cardiovascular,30,20.0,15,2025-01-17
+Produto,NUTRICIONAL,Multivitamínico,Nutrientes essenciais,50,15.0,5,2026-01-17
+Produto,NUTRICIONAL,Extrato de Chá Verde,Reforço antioxidante,60,18.0,10,2025-07-17
+Produto,NUTRICIONAL,Colagénio em Pó,Saúde da pele,35,30.0,5,2026-01-17
+
+Produto,EQUIPAMENTO_MEDICO,Monitor de Pressão Arterial,Leituras precisas,20,50.0,10,2024-07-17
+Produto,EQUIPAMENTO_MEDICO,Oxímetro de Pulso,Medição de saturação de oxigénio,15,30.0,15,2025-01-17
+Produto,EQUIPAMENTO_MEDICO,Nebulizador,Terapia respiratória,10,80.0,5,2026-01-17
+Produto,EQUIPAMENTO_MEDICO,Termómetro Digital,Leituras rápidas e precisas,25,10.0,10,2025-07-17
+Produto,EQUIPAMENTO_MEDICO,Kit de Primeiros Socorros,Essenciais de emergência,5,40.0,20,2026-07-17

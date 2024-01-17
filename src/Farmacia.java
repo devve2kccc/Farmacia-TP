@@ -1,3 +1,4 @@
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,6 +7,7 @@ import java.util.Scanner;
  * Gerencia produtos, clientes e vendas.
  */
 public class Farmacia implements InterfaceFarma {
+    private static NumberFormat numberFormat = Utils.getNumberFormat();
 
     // Lista de produtos disponíveis
     ArrayList<Produto> produtos;
@@ -253,6 +255,36 @@ public class Farmacia implements InterfaceFarma {
         System.out.println("Informação do cliente: ");
         Cliente clienteInfo = this.getClientes().get(escolhaCliente);
         System.out.println(clienteInfo);
+    }
+
+    public void listaVendas() {
+        System.out.println(" \n Lista de Vendas ");
+        for (Vendas v : this.getVendas()) {
+            System.out.println(v);
+        }
+    }
+
+    public void comprasTotais() {
+        System.out.println(" \n Numero total de vendas: ");
+        double totalVenda = 0;
+        for (Vendas totalVendas : this.getVendas()) {
+            totalVenda += totalVendas.getTotal();
+        }
+
+        int totalNvendas = this.getVendas().size();
+
+        System.out.println("    " + "Nº Total de vendas: " + totalNvendas + " | " + "Faturamento: "
+                + numberFormat.format(totalVenda));
+    }
+
+    public void imprimirRecibo(int clientIndex, int ultimaVenda) {
+        System.out.println("-------- Compra Finalizada! --------");
+        System.out.println("NIF: " + this.getClientes().get(clientIndex).getNif());
+        System.out.println("Produtos comprados:");
+        for (Produto produtoVendido : this.getVendas().get(ultimaVenda).getProduto()) {
+            System.out.println(produtoVendido.getNome());
+        }
+        System.out.println("Total: " + numberFormat.format(this.getVendas().get(ultimaVenda).getTotal()));
     }
 
 }

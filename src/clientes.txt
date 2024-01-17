@@ -1,0 +1,10 @@
+Cliente,Ana Silva,227311390,Morada,Rua Principal,Lisboa
+Cliente,João Oliveira,227311391,Morada,Avenida Central,Porto
+Cliente,Marta Costa,227311392,Morada,Praça da Liberdade,Braga
+Cliente,Rui Santos,227311393,Morada,Rua da Constituição,Coimbra
+Cliente,Carla Pereira,227311394,Morada,Rua Direita,Funchal
+Cliente,Pedro Almeida,227311395,Morada,Avenida da Boavista,Porto
+Cliente,Sofia Fernandes,227311396,Morada,Rua dos Clérigos,Porto
+Cliente,António Santos,227311397,Morada,Rua da Prata,Lisboa
+Cliente,Beatriz Silva,227311398,Morada,Avenida Aliados,Porto
+Cliente,Francisco Oliveira,227311399,Morada,Praça do Comércio,Lisboa
