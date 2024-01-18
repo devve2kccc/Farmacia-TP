@@ -277,6 +277,17 @@ public class Farmacia implements InterfaceFarma {
                 + numberFormat.format(totalVenda));
     }
 
+    public void totalArmazem() {
+        System.out.println("\n Stock em Armazem: ");
+        double total = 0;
+        for (Produto produto : this.getProdutos()) {
+            total += produto.getPreco() * produto.getStock();
+        }
+
+        System.out.println(
+                "Produtos: " + this.getProdutos().size() + " | " + "Valor em stock: " + numberFormat.format(total));
+    }
+
     public void imprimirRecibo(int clientIndex, int ultimaVenda) {
         System.out.println("-------- Compra Finalizada! --------");
         System.out.println("NIF: " + this.getClientes().get(clientIndex).getNif());

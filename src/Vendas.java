@@ -91,7 +91,7 @@ public class Vendas {
         }
         str += "\n";
 
-        str += "Total: " + this.total + "\n";
+        str += "Total: " + numberFormat.format(this.total) + "\n";
 
         return str;
     }

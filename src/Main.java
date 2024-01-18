@@ -642,7 +642,7 @@ public class Main {
         System.out.println("\n- - Menu de Estatísticas - -");
         System.out.println("1 - Lista de vendas");
         System.out.println("2 - Número total de vendas");
-        System.out.println("3 - A maior venda");
+        System.out.println("3 - Total Stock Armazem");
         System.out.println("0 - Voltar");
         System.out.print("Insira a sua opção: ");
 
@@ -656,7 +656,7 @@ public class Main {
                 farmacia.comprasTotais();
                 break;
             case 3:
-                // Implement the logic for the biggest sale here
+                farmacia.totalArmazem();
                 break;
             case 0:
                 break;
