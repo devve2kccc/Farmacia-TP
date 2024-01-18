@@ -25,23 +25,6 @@ public class Produto {
         this.validade = validade;
     }
 
-    /* Calcula a dose baseado na idade */
-    public void calculaDose(int idade) {
-        double dose = 0;
-
-        if (idade < 18) {
-            dose = 0.5;
-        } else if (idade >= 18 && idade < 40) {
-            dose = 1.0;
-        } else if (idade >= 40 && idade < 60) {
-            dose = 1.5;
-        } else {
-            dose = 2.0;
-        }
-
-        System.out.println("Dose calculada para idade " + idade + ": " + dose + "g");
-    }
-
     /* Retorna a categoria */
     public Categoria getCategoria() {
         return this.categoria;

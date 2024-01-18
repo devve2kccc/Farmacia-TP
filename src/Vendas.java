@@ -90,8 +90,7 @@ public class Vendas {
             }
         }
         str += "\n";
-
-        str += "Total: " + numberFormat.format(this.total) + "\n";
+        str += "Total c/Iva: " + numberFormat.format(this.total) + "\n";
 
         return str;
     }

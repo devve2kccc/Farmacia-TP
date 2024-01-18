@@ -6,11 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.text.NumberFormat;
 
 public class Main {
 
     private static final String INVALID_OPTION = "Digito Invalido. Tente Novamente.";
-
+    private static NumberFormat numberFormat = Utils.getNumberFormat();
     private static Farmacia farmacia = new Farmacia();
 
     public static void main(String[] args) {
@@ -489,6 +490,9 @@ public class Main {
 
         if (listaClienteChoiceRemove != -1) {
             farmacia.removeCliente(farmacia.getClientes().get(listaClienteChoiceRemove));
+            System.out.println(
+                    "Cliente: " + farmacia.getClientes().get(listaClienteChoiceRemove).getNome()
+                            + "removido com sucesso.");
         }
     }
 
@@ -502,6 +506,9 @@ public class Main {
 
         if (listaClienteChoiceReativar != -1) {
             farmacia.insereCliente(farmacia.getClientesIndisponiveis().get(listaClienteChoiceReativar));
+            System.out
+                    .println("Cliente: " + farmacia.getClientesIndisponiveis().get(listaClienteChoiceReativar).getNome()
+                            + "reativado com sucesso.");
         }
     }
 
@@ -557,7 +564,7 @@ public class Main {
                     System.out.println("    " + comprasCounter + " - "
                             + comprasClientes.getnumVenda() + " | "
                             + comprasClientes.getDate() + " | "
-                            + comprasClientes.getTotal() + "\n");
+                            + numberFormat.format(comprasClientes.getTotal()) + "\n");
                     comprasCounter++;
                 }
 
@@ -567,11 +574,14 @@ public class Main {
                         .getHistorico().size());
 
                 System.out.println();
-                if (confirmar(scan)) {
-                    farmacia.getClientes().get(listaClienteChoice).getHistorico()
-                            .remove(listaComprasChoice);
-                } else {
-                    break;
+                if (farmacia.getClientes().get(listaClienteChoice)
+                        .getHistorico().size() != 0) {
+                    if (confirmar(scan)) {
+                        farmacia.getClientes().get(listaClienteChoice).getHistorico()
+                                .remove(listaComprasChoice);
+                    } else {
+                        break;
+                    }
                 }
 
                 break;
@@ -620,6 +630,8 @@ public class Main {
 
         if (listaChoice2 != -1) {
             farmacia.removeProduto(farmacia.getProdutos().get(listaChoice2));
+            System.out.println(
+                    "Produto:  " + farmacia.getProdutos().get(listaChoice2).getNome() + " removido com sucesso.");
         }
     }
 
@@ -638,6 +650,8 @@ public class Main {
             int newStock = scan.nextInt();
             farmacia.getProdutosIndisponiveis().get(listaIndsChoice2).setStock(newStock);
             farmacia.insereProduto(farmacia.getProdutosIndisponiveis().get(listaIndsChoice2));
+            System.out.println("Produto: " + farmacia.getProdutosIndisponiveis().get(listaIndsChoice2).getNome()
+                    + "reativado com sucesso.");
         }
     }
 

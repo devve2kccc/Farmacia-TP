@@ -260,7 +260,9 @@ public class Farmacia implements InterfaceFarma {
     public void listaVendas() {
         System.out.println(" \n Lista de Vendas ");
         for (Vendas v : this.getVendas()) {
+            System.out.println("----------------------------");
             System.out.println(v);
+            System.out.println("----------------------------");
         }
     }
 
@@ -290,10 +292,12 @@ public class Farmacia implements InterfaceFarma {
 
     public void imprimirRecibo(int clientIndex, int ultimaVenda) {
         System.out.println("\n-------- Compra Finalizada! --------");
+        System.out.println("Nome: " + this.getClientes().get(clientIndex).getNome());
         System.out.println("NIF: " + this.getClientes().get(clientIndex).getNif());
         System.out.println("Produtos comprados:");
         for (Produto produtoVendido : this.getVendas().get(ultimaVenda).getProduto()) {
-            System.out.println(produtoVendido.getNome());
+            System.out.println(
+                    "    " + produtoVendido.getNome() + " | " + numberFormat.format(produtoVendido.getPreco()));
         }
         System.out.println("Total: " + numberFormat.format(this.getVendas().get(ultimaVenda).getTotal()));
     }
