@@ -237,15 +237,18 @@ public class Main {
                 }
             }
 
-            int ultimaVenda = farmacia.getVendas().size();
-            Vendas venda = new Vendas(ultimaVenda + 1, LocalDate.now(), farmacia.getClientes().get(clientIndex),
-                    produtosEscolhicos);
-            farmacia.getClientes().get(clientIndex).addVendaToHistorico(venda);
-            farmacia.insereVenda(venda);
+            if (produtosEscolhicos.size() != 0) {
+                int ultimaVenda = farmacia.getVendas().size();
+                Vendas venda = new Vendas(ultimaVenda + 1, LocalDate.now(), farmacia.getClientes().get(clientIndex),
+                        produtosEscolhicos);
+                farmacia.getClientes().get(clientIndex).addVendaToHistorico(venda);
+                farmacia.insereVenda(venda);
 
-            farmacia.imprimirRecibo(clientIndex, ultimaVenda);
+                farmacia.imprimirRecibo(clientIndex, ultimaVenda);
 
-            farmacia.updateStock(produtosEscolhicos);
+                farmacia.updateStock(produtosEscolhicos);
+            }
+
         } else {
             System.out.println("Cliente nao existe. Deseja criar?");
 

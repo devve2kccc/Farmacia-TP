@@ -289,7 +289,7 @@ public class Farmacia implements InterfaceFarma {
     }
 
     public void imprimirRecibo(int clientIndex, int ultimaVenda) {
-        System.out.println("-------- Compra Finalizada! --------");
+        System.out.println("\n-------- Compra Finalizada! --------");
         System.out.println("NIF: " + this.getClientes().get(clientIndex).getNif());
         System.out.println("Produtos comprados:");
         for (Produto produtoVendido : this.getVendas().get(ultimaVenda).getProduto()) {
