@@ -205,13 +205,13 @@ public class Main {
                 if (categoriaEscolhidaIndex == -1) {
                     if (produtosEscolhicos.isEmpty()) {
                         System.out.println("Você não tem produtos no carrinho. Deseja cancelar a compra?");
-                        if (confirmar(scan)) {
-                            return;
-                        } else {
-                            continue;
-                        }
                     } else {
+                        System.out.println("Você tem produtos no carrinho. Deseja finalizar a compra?");
+                    }
+                    if (confirmar(scan)) {
                         break;
+                    } else {
+                        continue;
                     }
                 }
 
