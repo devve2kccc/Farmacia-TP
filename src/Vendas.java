@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Vendas {
     /* Formatador de números para a localidade da Alemanha */
-    NumberFormat numberFormat = Utils.getNumberFormat();
+    private NumberFormat numberFormat = Utils.getNumberFormat();
 
     /* Variáveis do objeto */
     private int numVenda;

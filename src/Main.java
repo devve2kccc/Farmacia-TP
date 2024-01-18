@@ -230,10 +230,10 @@ public class Main {
 
                     if (produtoEscolhidoIndex == -1) {
                         break;
-                    } else {
-                        produtosEscolhicos.add(produtosCategoria.get(produtoEscolhidoIndex));
-                        System.out.println("Produto adicionado ao carrinho!");
                     }
+
+                    produtosEscolhicos.add(produtosCategoria.get(produtoEscolhidoIndex));
+                    System.out.println("Produto adicionado ao carrinho!");
                 }
             }
 

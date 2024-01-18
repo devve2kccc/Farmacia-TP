@@ -131,7 +131,7 @@ public class Produto {
         str += "Nome: " + (this.nome == null ? "null" : this.nome) + "\n";
         str += "Descrição: " + (this.descricao == null ? "null" : this.descricao) + "\n";
         str += "Stock: " + this.stock + "\n";
-        str += "Preço: " + this.preco + "\n";
+        str += "Preço: " + numberFormat.format(this.preco) + "\n";
         str += "Iva: " + this.iva + "%" + "\n";
         str += "Validade: " + (this.validade == null ? "null" : this.validade) + "\n";
 
